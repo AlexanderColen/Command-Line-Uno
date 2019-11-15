@@ -41,11 +41,21 @@ if __name__ == '__main__':
     print('\nGenerating card validity checks...')
     # Generate 1000 card checks.
     for i in range(1000):
-        top = d[random.randint(0, len(d) - 1)]
-        chosen = d[random.randint(0, len(d) - 1)]
+        d_copy = d.copy()
+        top = d_copy[random.randint(0, len(d_copy) - 1)]
+        d_copy.remove(top)
+        hand = []
+        for j in range(0, 10):
+            random_card = d_copy[random.randint(0, len(d_copy) - 1)]
+            hand.append(random_card)
+            d_copy.remove(random_card)
 
-        validity = check_valid_move(top_card=top, chosen_card=chosen)
-        print('Top card: {0} - Chosen card: {1} - Able to play: {2}'.format(top, chosen, validity))
+        playable = []
+        for card in hand:
+            if check_valid_move(top_card=top, chosen_card=card):
+                playable.append(card)
+
+        print('Top card: {0} - Cards able to play: {1}'.format(top, [c.__str__() for c in playable]))
 
     if 'check' in sys.argv:
         while True:
